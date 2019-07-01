@@ -1,0 +1,90 @@
+USE lab_mysql;
+/* Challenge 2: Création des tables */
+
+CREATE TABLE Cars (
+	ID INT AUTO_INCREMENT PRIMARY KEY,
+	VIN VARCHAR(100) NOT NULL, 
+	Manufacturer VARCHAR(100), 
+	Model VARCHAR(100), 
+	Year VARCHAR(100),
+	Color VARCHAR(100)
+		);
+
+CREATE TABLE Customers (
+	ID INT AUTO_INCREMENT PRIMARY KEY,
+	CustomerID INT NOT NULL, 
+	Name VARCHAR(100), 
+	PhoneNumber VARCHAR(100), 
+	Email VARCHAR(200), 
+	Adress VARCHAR(200), 
+	City VARCHAR(100), 
+	StateProvince VARCHAR(100), 
+	Country VARCHAR(100), 
+	Postal INT
+		);
+
+CREATE TABLE SalesPersons (
+	ID INT AUTO_INCREMENT PRIMARY KEY,
+	StaffID INT NOT NULL, 
+	Name VARCHAR(100), 
+	Store VARCHAR(100)
+		);
+
+CREATE TABLE Invoices (
+	ID INT AUTO_INCREMENT PRIMARY KEY,
+	InvoiceID INT NOT NULL, 
+	DateInvoices DATE, 
+	ID_Car INT,
+	CustomerID INT,
+	StaffID INT,
+	CONSTRAINT fk_Car_ID
+		FOREIGN KEY (ID_Car) REFERENCES Cars(ID) ON UPDATE CASCADE ON DELETE CASCADE, 
+	CONSTRAINT fk_CustomerID
+		FOREIGN KEY (CustomerID) REFERENCES Customers(ID) ON UPDATE CASCADE ON DELETE CASCADE, 
+	CONSTRAINT fk_StaffID		
+		FOREIGN KEY (StaffID) REFERENCES SalesPersons(ID) ON UPDATE CASCADE ON DELETE CASCADE
+		);
+
+/* Challenge 3: Insertion des données */
+
+INSERT INTO Cars (VIN, Manufacturer, Model, Year, Color) VALUES 
+	('3K096I98581DHSNUP', '
+Volkswagen', 'Tiguan', '2019', 'Blue'), 
+	('ZM8G7BEUQZ97IH46V','Peugeot','Rifter','2019','Red'),
+	('RKXVNNIHLVVZOUB4M','Ford','Fusion','2018','White'),
+	('HKNDGS7CU31E9Z7JW','Toyota','RAV4','2018','Silver'),
+	('DAM41UDN3CHU2WVF6','Volvo','V60','2019','Gray'),
+	('DAM41UDN3CHU2WVF6','Volvo','V60 Cross Country','2019','Gray');
+
+INSERT INTO Customers (CustomerID, Name, PhoneNumber, Email, Adress, City, StateProvince, Country, Postal) VALUES 
+	('10001','Pablo Picasso', '+34 636 17 63 82', '-', 'Paseo de la Chopera, 14', 'Madrid','Madrid', 'Spain','28045'),
+	('20001','Abraham Lincoln', '+13059077086', '-', '120 SW 8th St', 'Miami','Florida','United States','33130'),
+	('30001','Napoléon Bonaparte','+33 1 79 75 40 00','-','40 Rue du Colisée', 'Paris','Île-de-France','France','75008');
+
+INSERT INTO SalesPersons (StaffID,Name, Store) VALUES 
+	('00001','Petey Cruiser','Madrid'),
+	('00002','Anna Sthesia','Barcelona'),
+	('00003','Paul Molive','Berlin'),
+	('00004','Gail Forcewind','Paris'),
+	('00005','Paige Turner','Mimia'),
+	('00006','Bob Frapples','Mexico City'),
+	('00007','Walter Melon', 'Amsterdam'),
+	('00008','Shonda Leer','São Paulo');
+
+INSERT INTO Invoices (InvoiceID, DateInvoices, ID_Car, CustomerID, StaffID) VALUES 
+	('852399038','2018-08-22','1','2','3'), 
+	('731166526','2019-12-31','5','1','5'),
+	('271135104','2019-01-22','3','3','7');
+
+/*Bonus challenge */
+
+/*Update les données
+
+UPDATE SalesPersons SET `Store` = 'Miami' WHERE StaffID=00005;
+UPDATE Customers SET `Email` = 'ppicasso@gmail.com' WHERE Name='Pablo Picasso';
+UPDATE Customers SET `Email` = 'lincoln@us.gov' WHERE Name='Abraham Lincoln';
+UPDATE Customers SET `Email` = 'hello@napoleon.me' WHERE Name='Napoléon Bonaparte';
+
+/*Effacer les données d'une table */
+
+DELETE FROM Cars WHERE ID=4;
